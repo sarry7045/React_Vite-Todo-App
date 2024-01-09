@@ -19,9 +19,11 @@ function App() {
 export default App;
 
 // If Input empty raha toh user add nhi kar sakta - Done  -  Open Message popup for it - Done
+// Select All and Delete All - Done
 
 // We can also edit the Todo
-// Select All and Delete All , Select Multiple and Delete Multiple
-// When selecting one by one all , its not showing delete button
-// When i Select all and Unselect one by one at that time we have to Unchekc the select all input
-// when we select all and refreh , after that seldted items id fine but , selectall check box and dlete button hidden
+// When user trying to add Same todo as they added previosly
+// Select Multiple and Delete Multiple
+// When selecting one by one all , its not showing delete ALL button
+// When i Select all and Unselect one by one at that time we have to Uncheck the select all input
+// When we select all and refreh , after that seleted items is fine but , selectall check box and delete button hidden

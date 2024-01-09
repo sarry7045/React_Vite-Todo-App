@@ -1,7 +1,6 @@
 import { Link, useSearchParams } from "react-router-dom";
 
 const Navbar = () => {
-  
   const [searchParam] = useSearchParams();
   const todosData = searchParam.get("todos");
 

@@ -19,12 +19,14 @@ export type TodosContext = {
   selectAll: boolean;
   setSelectAll: unknown;
   handleDeleteTodo: (id: string) => void;
+  handleDeleteAll: () => void;
+  handleDeleteMultiple: () => void;
+  // handleEditTodo: (id: string, task: string) => void;
 };
 
 export const todoContext = createContext<TodosContext | null>(null);
 
 export const TodoProvider = ({ children }: TodosProviderType) => {
-  
   const [todos, setTodos] = useState<Todo[]>(() => {
     try {
       const newTodos = localStorage.getItem("todos") || "[]";
@@ -34,6 +36,7 @@ export const TodoProvider = ({ children }: TodosProviderType) => {
     }
   });
   const [selectAll, setSelectAll] = useState<boolean>(false);
+  const [selectedTodos, setSelectedTodos] = useState<string[]>([]);
 
   const handleAddTodo = (task: string) => {
     setTodos((prev) => {
@@ -63,6 +66,14 @@ export const TodoProvider = ({ children }: TodosProviderType) => {
       localStorage.setItem("todos", JSON.stringify(newTodos));
       return newTodos;
     });
+
+    setSelectedTodos((prevSelected) => {
+      if (prevSelected.includes(id)) {
+        return prevSelected.filter((selectedId) => selectedId !== id);
+      } else {
+        return [...prevSelected, id];
+      }
+    });
   };
 
   const handleSelectAll = () => {
@@ -84,6 +95,22 @@ export const TodoProvider = ({ children }: TodosProviderType) => {
     });
   };
 
+  const handleDeleteAll = () => {
+    setTodos([]);
+    localStorage.removeItem("todos");
+  };
+
+  const handleDeleteMultiple = () => {
+    setTodos((prev) => {
+      const newTodos = prev.filter((todo) => !selectedTodos.includes(todo.id));
+      localStorage.setItem("todos", JSON.stringify(newTodos));
+      setSelectedTodos([]); // Clear selected todos after deletion
+      return newTodos;
+    });
+  };
+
+  // const handleEditTodo = (id: string, task: string) => {};
+
   return (
     <todoContext.Provider
       value={{
@@ -94,6 +121,9 @@ export const TodoProvider = ({ children }: TodosProviderType) => {
         selectAll,
         setSelectAll,
         handleDeleteTodo,
+        handleDeleteAll,
+        handleDeleteMultiple,
+        // handleEditTodo,
       }}
     >
       {children}
